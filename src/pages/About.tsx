@@ -129,7 +129,7 @@ const About = () => {
               <p className="text-lg text-muted-foreground mb-6">
                 Join thousands of users who have already improved their social confidence with IceBreaker.
               </p>
-              <Link to="/">
+              <Link to="/start">
                 <Button variant="confidence" size="lg" className="text-lg px-8 py-6">
                   <Sparkles className="h-5 w-5 mr-2" />
                   Get Started Now

@@ -20,8 +20,12 @@ interface UserProfileData {
 
 type AppStep = "welcome" | "profile" | "event" | "icebreakers";
 
-export const SocialConfidenceApp = () => {
-  const [currentStep, setCurrentStep] = useState<AppStep>("welcome");
+interface SocialConfidenceAppProps {
+  initialStep?: AppStep;
+}
+
+export const SocialConfidenceApp = ({ initialStep = "welcome" }: SocialConfidenceAppProps) => {
+  const [currentStep, setCurrentStep] = useState<AppStep>(initialStep);
   const [userProfile, setUserProfile] = useState<UserProfileData | null>(null);
   const [selectedEvent, setSelectedEvent] = useState<{ type: string; name: string } | null>(null);
   const [ratings, setRatings] = useState<Record<string, number>>({});
