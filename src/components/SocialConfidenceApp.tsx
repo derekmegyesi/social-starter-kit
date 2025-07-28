@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { UserProfile } from "./UserProfile";
 import { EventSelector } from "./EventSelector";
 import { IceBreakerGenerator } from "./IceBreakerGenerator";
@@ -97,15 +98,16 @@ export const SocialConfidenceApp = () => {
                   <Sparkles className="h-5 w-5 mr-2" />
                   Get Started
                 </Button>
-                <Button 
-                  variant="outline" 
-                  size="lg"
-                  className="text-lg px-8 py-6"
-                  onClick={() => document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' })}
-                >
-                  <Users className="h-5 w-5 mr-2" />
-                  Learn More
-                </Button>
+                <Link to="/about">
+                  <Button 
+                    variant="outline" 
+                    size="lg"
+                    className="text-lg px-8 py-6"
+                  >
+                    <Users className="h-5 w-5 mr-2" />
+                    Learn More
+                  </Button>
+                </Link>
               </div>
             </div>
 
