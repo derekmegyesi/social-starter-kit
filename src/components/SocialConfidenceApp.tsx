@@ -101,6 +101,7 @@ export const SocialConfidenceApp = () => {
                   variant="outline" 
                   size="lg"
                   className="text-lg px-8 py-6"
+                  onClick={() => document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' })}
                 >
                   <Users className="h-5 w-5 mr-2" />
                   Learn More
@@ -109,7 +110,7 @@ export const SocialConfidenceApp = () => {
             </div>
 
             {/* Features Section */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-16">
+            <div id="features" className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-16">
               <Card className="text-center p-6 shadow-soft hover:shadow-warm transition-all duration-300">
                 <CardContent className="pt-6">
                   <div className="w-12 h-12 bg-gradient-primary rounded-full flex items-center justify-center mx-auto mb-4">
