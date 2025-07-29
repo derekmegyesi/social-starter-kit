@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
 import { RefreshCw, ThumbsUp, ThumbsDown, Lightbulb, MessageCircle, Star, Copy } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 interface IceBreaker {
   id: string;
@@ -158,17 +159,72 @@ export const IceBreakerGenerator = ({ profile, eventType, eventName, onRating }:
   const { toast } = useToast();
 
   useEffect(() => {
-    const generated = generateIceBreakers(profile, eventType);
-    setIceBreakers(generated);
+    generateAndSaveIceBreakers();
   }, [profile, eventType]);
 
-  const handleRating = (iceBreakerID: string, rating: number) => {
+  const generateAndSaveIceBreakers = async () => {
+    const generated = generateIceBreakers(profile, eventType);
+    setIceBreakers(generated);
+    
+    // Save generated icebreakers to database
+    const { data: { user } } = await supabase.auth.getUser();
+    if (user) {
+      const icebreakerData = generated.map(iceBreaker => ({
+        user_id: user.id,
+        text: iceBreaker.text,
+        category: iceBreaker.category,
+        difficulty: iceBreaker.difficulty,
+        event_type: eventType,
+        event_name: eventName
+      }));
+
+      const { error } = await supabase
+        .from('icebreakers')
+        .insert(icebreakerData);
+
+      if (error) {
+        console.error('Error saving icebreakers:', error);
+      }
+    }
+  };
+
+  const handleRating = async (iceBreakerID: string, rating: number) => {
     setIceBreakers(prev => 
       prev.map(ib => 
         ib.id === iceBreakerID ? { ...ib, rating } : ib
       )
     );
     onRating(iceBreakerID, rating);
+    
+    // Save rating to database
+    const { data: { user } } = await supabase.auth.getUser();
+    if (user) {
+      // First, find the database icebreaker ID for this local icebreaker
+      const iceBreaker = iceBreakers.find(ib => ib.id === iceBreakerID);
+      if (iceBreaker) {
+        const { data: dbIceBreaker } = await supabase
+          .from('icebreakers')
+          .select('id')
+          .eq('user_id', user.id)
+          .eq('text', iceBreaker.text)
+          .eq('event_type', eventType)
+          .single();
+
+        if (dbIceBreaker) {
+          const { error } = await supabase
+            .from('icebreaker_ratings')
+            .upsert({
+              user_id: user.id,
+              icebreaker_id: dbIceBreaker.id,
+              rating
+            });
+
+          if (error) {
+            console.error('Error saving rating:', error);
+          }
+        }
+      }
+    }
     
     if (rating >= 4) {
       toast({
@@ -187,8 +243,7 @@ export const IceBreakerGenerator = ({ profile, eventType, eventName, onRating }:
   };
 
   const regenerateIceBreakers = () => {
-    const newIceBreakers = generateIceBreakers(profile, eventType);
-    setIceBreakers(newIceBreakers);
+    generateAndSaveIceBreakers();
     toast({
       title: "New ice breakers generated!",
       description: "Here are some fresh conversation starters for you.",
