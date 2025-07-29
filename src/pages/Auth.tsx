@@ -179,22 +179,20 @@ export default function Auth() {
             
             {/* What is IceBreaker Maker Button */}
             <div className="absolute right-4 top-1/2 transform -translate-y-1/2">
-              <Dialog>
-                <DialogTrigger asChild>
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
+              <TooltipProvider>
+                <Tooltip>
+                  <Dialog>
+                    <TooltipTrigger asChild>
+                      <DialogTrigger asChild>
                         <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
                           <HelpCircle className="h-4 w-4" />
                         </Button>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>What is the IceBreaker Maker?</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                </DialogTrigger>
-                <DialogContent className="max-w-2xl">
+                      </DialogTrigger>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>What is the IceBreaker Maker?</p>
+                    </TooltipContent>
+                    <DialogContent className="max-w-2xl">
                   <DialogHeader>
                     <DialogTitle className="text-2xl bg-gradient-primary bg-clip-text text-transparent flex items-center gap-2">
                       <Lightbulb className="h-6 w-6 text-primary" />
@@ -222,8 +220,10 @@ export default function Auth() {
                       </div>
                     </DialogDescription>
                   </DialogHeader>
-                </DialogContent>
-              </Dialog>
+                    </DialogContent>
+                  </Dialog>
+                </Tooltip>
+              </TooltipProvider>
             </div>
           </CardHeader>
         <CardContent>
