@@ -5,7 +5,8 @@ import { EventSelector } from "./EventSelector";
 import { IceBreakerGenerator } from "./IceBreakerGenerator";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { ArrowLeft, Users, Sparkles } from "lucide-react";
+import { ArrowLeft, Users, Sparkles, LogOut } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
 import heroImage from "@/assets/hero-social.jpg";
 
 interface UserProfileData {
@@ -29,6 +30,7 @@ export const SocialConfidenceApp = ({ initialStep = "welcome" }: SocialConfidenc
   const [userProfile, setUserProfile] = useState<UserProfileData | null>(null);
   const [selectedEvent, setSelectedEvent] = useState<{ type: string; name: string } | null>(null);
   const [ratings, setRatings] = useState<Record<string, number>>({});
+  const { signOut, user } = useAuth();
 
   const handleProfileComplete = (profile: UserProfileData) => {
     setUserProfile(profile);
@@ -176,11 +178,20 @@ export const SocialConfidenceApp = ({ initialStep = "welcome" }: SocialConfidenc
             </h1>
           </div>
           
-          {currentStep === "icebreakers" && (
-            <Button variant="outline" onClick={startOver}>
-              Start Over
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-muted-foreground">
+              {user?.email}
+            </span>
+            {currentStep === "icebreakers" && (
+              <Button variant="outline" onClick={startOver}>
+                Start Over
+              </Button>
+            )}
+            <Button variant="ghost" onClick={signOut}>
+              <LogOut className="h-4 w-4 mr-2" />
+              Sign Out
             </Button>
-          )}
+          </div>
         </div>
 
         {/* Progress Indicator */}
