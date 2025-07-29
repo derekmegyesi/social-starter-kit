@@ -10,6 +10,7 @@ import { Loader2, Mail, Lock, User } from "lucide-react";
 
 export default function Auth() {
   const [isLogin, setIsLogin] = useState(true);
+  const [isForgotPassword, setIsForgotPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -113,6 +114,32 @@ export default function Auth() {
     }
   };
 
+  const handleForgotPassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/auth`,
+    });
+
+    setLoading(false);
+
+    if (error) {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      });
+    } else {
+      toast({
+        title: "Check your email",
+        description: "We've sent you a password reset link.",
+      });
+      setIsForgotPassword(false);
+      setIsLogin(true);
+    }
+  };
+
   const resetForm = () => {
     setEmail("");
     setPassword("");
@@ -129,91 +156,151 @@ export default function Auth() {
       <Card className="w-full max-w-md shadow-warm">
         <CardHeader className="text-center">
           <CardTitle className="text-2xl bg-gradient-primary bg-clip-text text-transparent">
-            {isLogin ? "Welcome Back" : "Join Us"}
+            {isForgotPassword ? "Reset Password" : isLogin ? "Welcome Back" : "Join Us"}
           </CardTitle>
           <CardDescription>
-            {isLogin 
-              ? "Sign in to access your personalized ice breakers" 
-              : "Create an account to start building your social confidence"
+            {isForgotPassword 
+              ? "Enter your email to receive a password reset link"
+              : isLogin 
+                ? "Sign in to access your personalized ice breakers" 
+                : "Create an account to start building your social confidence"
             }
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={isLogin ? handleSignIn : handleSignUp} className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="email" className="flex items-center gap-2">
-                <Mail className="h-4 w-4" />
-                Email
-              </Label>
-              <Input
-                id="email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Enter your email"
-                required
-                disabled={loading}
-              />
-            </div>
-            
-            <div className="space-y-2">
-              <Label htmlFor="password" className="flex items-center gap-2">
-                <Lock className="h-4 w-4" />
-                Password
-              </Label>
-              <Input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Enter your password"
-                required
-                disabled={loading}
-                minLength={6}
-              />
-            </div>
-
-            {!isLogin && (
+          {isForgotPassword ? (
+            <form onSubmit={handleForgotPassword} className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="confirmPassword" className="flex items-center gap-2">
-                  <Lock className="h-4 w-4" />
-                  Confirm Password
+                <Label htmlFor="email" className="flex items-center gap-2">
+                  <Mail className="h-4 w-4" />
+                  Email
                 </Label>
                 <Input
-                  id="confirmPassword"
+                  id="email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Enter your email"
+                  required
+                  disabled={loading}
+                />
+              </div>
+
+              <Button 
+                type="submit" 
+                className="w-full" 
+                disabled={loading}
+              >
+                {loading && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
+                Send Reset Link
+              </Button>
+            </form>
+          ) : (
+            <form onSubmit={isLogin ? handleSignIn : handleSignUp} className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="email" className="flex items-center gap-2">
+                  <Mail className="h-4 w-4" />
+                  Email
+                </Label>
+                <Input
+                  id="email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Enter your email"
+                  required
+                  disabled={loading}
+                />
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="password" className="flex items-center gap-2">
+                  <Lock className="h-4 w-4" />
+                  Password
+                </Label>
+                <Input
+                  id="password"
                   type="password"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  placeholder="Confirm your password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Enter your password"
                   required
                   disabled={loading}
                   minLength={6}
                 />
               </div>
-            )}
 
-            <Button 
-              type="submit" 
-              className="w-full" 
-              disabled={loading}
-            >
-              {loading && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
-              {isLogin ? "Sign In" : "Create Account"}
-            </Button>
-          </form>
+              {!isLogin && (
+                <div className="space-y-2">
+                  <Label htmlFor="confirmPassword" className="flex items-center gap-2">
+                    <Lock className="h-4 w-4" />
+                    Confirm Password
+                  </Label>
+                  <Input
+                    id="confirmPassword"
+                    type="password"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    placeholder="Confirm your password"
+                    required
+                    disabled={loading}
+                    minLength={6}
+                  />
+                </div>
+              )}
+
+              <Button 
+                type="submit" 
+                className="w-full" 
+                disabled={loading}
+              >
+                {loading && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
+                {isLogin ? "Sign In" : "Create Account"}
+              </Button>
+            </form>
+          )}
 
           <div className="mt-6 text-center">
-            <p className="text-sm text-muted-foreground">
-              {isLogin ? "Don't have an account?" : "Already have an account?"}
-            </p>
-            <Button 
-              variant="link" 
-              onClick={toggleMode}
-              disabled={loading}
-              className="p-0 h-auto font-normal text-primary"
-            >
-              {isLogin ? "Sign up here" : "Sign in here"}
-            </Button>
+            {isForgotPassword ? (
+              <Button 
+                variant="link" 
+                onClick={() => {
+                  setIsForgotPassword(false);
+                  setIsLogin(true);
+                  resetForm();
+                }}
+                disabled={loading}
+                className="p-0 h-auto font-normal text-primary"
+              >
+                Back to sign in
+              </Button>
+            ) : (
+              <>
+                {isLogin && (
+                  <div className="mb-4">
+                    <Button 
+                      variant="link" 
+                      onClick={() => setIsForgotPassword(true)}
+                      disabled={loading}
+                      className="p-0 h-auto font-normal text-muted-foreground text-sm"
+                    >
+                      Forgot password?
+                    </Button>
+                  </div>
+                )}
+                <p className="text-sm text-muted-foreground">
+                  {isLogin ? "Don't have an account?" : "Already have an account?"}
+                </p>
+                <Button 
+                  variant="link" 
+                  onClick={toggleMode}
+                  disabled={loading}
+                  className="p-0 h-auto font-normal text-primary"
+                >
+                  {isLogin ? "Sign up here" : "Sign in here"}
+                </Button>
+              </>
+            )}
           </div>
         </CardContent>
       </Card>
