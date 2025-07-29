@@ -151,15 +151,11 @@ export default function Auth() {
           <div className="text-center">
             <div className="flex justify-center">
               <div className="relative">
-                <div className="h-32 w-32 rounded-full bg-white shadow-xl ring-4 ring-white flex items-center justify-center">
-                  <div className="flex items-center justify-center">
-                    <img 
-                      src={icebreakerShip} 
-                      alt="Icebreaker ship in Arctic ice" 
-                      className="h-20 w-20 rounded-full object-cover"
-                    />
-                  </div>
-                </div>
+                <img 
+                  src={icebreakerShip} 
+                  alt="Icebreaker ship in Arctic ice" 
+                  className="h-32 w-32 rounded-full object-cover shadow-xl ring-4 ring-white"
+                />
                 <div className="absolute -bottom-3 -right-3 h-12 w-12 bg-gradient-primary rounded-full flex items-center justify-center shadow-lg">
                   <Zap className="h-6 w-6 text-white" />
                 </div>
