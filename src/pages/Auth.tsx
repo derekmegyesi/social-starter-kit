@@ -146,47 +146,6 @@ export default function Auth() {
         </div>
       </div>
 
-      {/* What is IceBreaker Maker Button */}
-      <div className="flex justify-center -mt-6 mb-6">
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button variant="outline" className="bg-white/90 hover:bg-white shadow-lg">
-              <HelpCircle className="h-4 w-4 mr-2" />
-              What is the IceBreaker Maker?
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="max-w-2xl">
-            <DialogHeader>
-              <DialogTitle className="text-2xl bg-gradient-primary bg-clip-text text-transparent flex items-center gap-2">
-                <Lightbulb className="h-6 w-6 text-primary" />
-                About IceBreaker Maker
-              </DialogTitle>
-              <DialogDescription asChild>
-                <div className="space-y-4 text-base">
-                  <p className="leading-relaxed">
-                    Transform awkward social moments into meaningful connections with AI-powered, personalized conversation starters. 
-                    Whether you're at a party, networking event, or casual meetup, our intelligent system crafts icebreaker questions 
-                    tailored to your personality, the event type, and your comfort level.
-                  </p>
-                  <p className="leading-relaxed">
-                    Say goodbye to social anxiety and hello to genuine conversations that flow naturally and help you build lasting relationships.
-                  </p>
-                  <div className="bg-muted/50 p-4 rounded-lg">
-                    <h4 className="font-semibold mb-2 text-foreground">How it works:</h4>
-                    <ul className="space-y-1 text-sm text-muted-foreground">
-                      <li>• Create your personalized profile</li>
-                      <li>• Select your event type (party, networking, casual meetup, etc.)</li>
-                      <li>• Get AI-generated icebreakers designed just for you</li>
-                      <li>• Rate and improve your suggestions over time</li>
-                    </ul>
-                  </div>
-                </div>
-              </DialogDescription>
-            </DialogHeader>
-          </DialogContent>
-        </Dialog>
-      </div>
-
       <div className="flex items-center justify-center p-4">
         <div className="w-full max-w-md space-y-8">
           {/* App logo */}
@@ -206,7 +165,7 @@ export default function Auth() {
           </div>
 
         <Card className="shadow-warm">
-          <CardHeader className="text-center">
+          <CardHeader className="text-center relative">
             <CardTitle className="text-2xl bg-gradient-primary bg-clip-text text-transparent">
               {isLogin ? "Welcome Back" : "Join Us"}
             </CardTitle>
@@ -216,6 +175,46 @@ export default function Auth() {
                 : "Create an account to start building your social confidence"
               }
             </CardDescription>
+            
+            {/* What is IceBreaker Maker Button */}
+            <div className="absolute right-4 top-1/2 transform -translate-y-1/2">
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                    <HelpCircle className="h-4 w-4" />
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="max-w-2xl">
+                  <DialogHeader>
+                    <DialogTitle className="text-2xl bg-gradient-primary bg-clip-text text-transparent flex items-center gap-2">
+                      <Lightbulb className="h-6 w-6 text-primary" />
+                      About IceBreaker Maker
+                    </DialogTitle>
+                    <DialogDescription asChild>
+                      <div className="space-y-4 text-base">
+                        <p className="leading-relaxed">
+                          Transform awkward social moments into meaningful connections with AI-powered, personalized conversation starters. 
+                          Whether you're at a party, networking event, or casual meetup, our intelligent system crafts icebreaker questions 
+                          tailored to your personality, the event type, and your comfort level.
+                        </p>
+                        <p className="leading-relaxed">
+                          Say goodbye to social anxiety and hello to genuine conversations that flow naturally and help you build lasting relationships.
+                        </p>
+                        <div className="bg-muted/50 p-4 rounded-lg">
+                          <h4 className="font-semibold mb-2 text-foreground">How it works:</h4>
+                          <ul className="space-y-1 text-sm text-muted-foreground">
+                            <li>• Create your personalized profile</li>
+                            <li>• Select your event type (party, networking, casual meetup, etc.)</li>
+                            <li>• Get AI-generated icebreakers designed just for you</li>
+                            <li>• Rate and improve your suggestions over time</li>
+                          </ul>
+                        </div>
+                      </div>
+                    </DialogDescription>
+                  </DialogHeader>
+                </DialogContent>
+              </Dialog>
+            </div>
           </CardHeader>
         <CardContent>
           <form onSubmit={isLogin ? handleSignIn : handleSignUp} className="space-y-4">
