@@ -8,7 +8,7 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { Loader2, Mail, Lock, User, Lightbulb, Zap, Pickaxe } from "lucide-react";
 import icebreakerShip from "@/assets/icebreaker-ship.jpg";
-import groupCelebration from "@/assets/group-celebration.jpg";
+import friendsFaces from "@/assets/friends-faces.jpg";
 
 export default function Auth() {
   const [isLogin, setIsLogin] = useState(true);
@@ -130,17 +130,17 @@ export default function Auth() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-background to-muted">
       {/* Banner */}
-      <div className="relative h-48 overflow-hidden">
+      <div className="relative h-48 overflow-hidden animate-fade-in">
         <img 
-          src={groupCelebration} 
-          alt="Group of friends celebrating together" 
-          className="w-full h-full object-cover"
+          src={friendsFaces} 
+          alt="Friends laughing together showing their faces" 
+          className="w-full h-full object-cover hover-scale"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-primary/70 to-purple-500/60" />
-        <div className="absolute inset-0 flex items-center justify-center">
+        <div className="absolute inset-0 bg-gradient-to-r from-primary/70 to-purple-500/60 animate-fade-in" />
+        <div className="absolute inset-0 flex items-center justify-center animate-scale-in">
           <div className="text-center text-white">
             <h1 className="text-4xl font-bold mb-2 animate-pulse">🎉 Icebreaker Maker 🎉</h1>
-            <p className="text-xl opacity-90">Break the ice with confidence and have fun!</p>
+            <p className="text-xl opacity-90 animate-fade-in">Break the ice with confidence and have fun!</p>
           </div>
         </div>
       </div>
@@ -148,15 +148,15 @@ export default function Auth() {
       <div className="flex items-center justify-center p-4 -mt-12">
         <div className="w-full max-w-md space-y-8">
           {/* App logo */}
-          <div className="text-center">
+          <div className="text-center animate-scale-in">
             <div className="flex justify-center">
-              <div className="relative">
+              <div className="relative hover-scale">
                 <img 
                   src={icebreakerShip} 
                   alt="Icebreaker ship in Arctic ice" 
-                  className="h-32 w-32 rounded-full object-cover shadow-xl ring-4 ring-white"
+                  className="h-32 w-32 rounded-full object-cover shadow-xl ring-4 ring-white animate-fade-in"
                 />
-                <div className="absolute -bottom-3 -right-3 h-12 w-12 bg-gradient-primary rounded-full flex items-center justify-center shadow-lg">
+                <div className="absolute -bottom-3 -right-3 h-12 w-12 bg-gradient-primary rounded-full flex items-center justify-center shadow-lg animate-pulse">
                   <Zap className="h-6 w-6 text-white" />
                 </div>
               </div>
