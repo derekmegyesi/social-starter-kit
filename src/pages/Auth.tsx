@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { Loader2, Mail, Lock, User } from "lucide-react";
+import { Loader2, Mail, Lock, User, Sparkles } from "lucide-react";
 
 export default function Auth() {
   const [isLogin, setIsLogin] = useState(true);
@@ -127,18 +127,39 @@ export default function Auth() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background to-muted flex items-center justify-center p-4">
-      <Card className="w-full max-w-md shadow-warm">
-        <CardHeader className="text-center">
-          <CardTitle className="text-2xl bg-gradient-primary bg-clip-text text-transparent">
-            {isLogin ? "Welcome Back" : "Join Us"}
-          </CardTitle>
-          <CardDescription>
-            {isLogin 
-              ? "Sign in to access your personalized ice breakers" 
-              : "Create an account to start building your social confidence"
-            }
-          </CardDescription>
-        </CardHeader>
+      <div className="w-full max-w-md space-y-8">
+        {/* App branding and overview */}
+        <div className="text-center space-y-4">
+          <div className="flex justify-center">
+            <div className="relative">
+              <Sparkles className="h-16 w-16 text-primary" />
+              <div className="absolute -top-1 -right-1 h-6 w-6 bg-primary rounded-full flex items-center justify-center">
+                <Sparkles className="h-3 w-3 text-primary-foreground" />
+              </div>
+            </div>
+          </div>
+          <div className="space-y-2">
+            <h1 className="text-3xl font-bold bg-gradient-primary bg-clip-text text-transparent">
+              Social Confidence
+            </h1>
+            <p className="text-muted-foreground max-w-sm mx-auto">
+              Break the ice with confidence. Get personalized conversation starters for any social situation.
+            </p>
+          </div>
+        </div>
+
+        <Card className="shadow-warm">
+          <CardHeader className="text-center">
+            <CardTitle className="text-2xl bg-gradient-primary bg-clip-text text-transparent">
+              {isLogin ? "Welcome Back" : "Join Us"}
+            </CardTitle>
+            <CardDescription>
+              {isLogin 
+                ? "Sign in to access your personalized ice breakers" 
+                : "Create an account to start building your social confidence"
+              }
+            </CardDescription>
+          </CardHeader>
         <CardContent>
           <form onSubmit={isLogin ? handleSignIn : handleSignUp} className="space-y-4">
               <div className="space-y-2">
@@ -217,7 +238,8 @@ export default function Auth() {
             </Button>
           </div>
         </CardContent>
-      </Card>
+        </Card>
+      </div>
     </div>
   );
 }
