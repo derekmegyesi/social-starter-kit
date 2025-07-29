@@ -8,7 +8,7 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { Loader2, Mail, Lock, User, Lightbulb, Zap, Pickaxe } from "lucide-react";
 import icebreakerShip from "@/assets/icebreaker-ship.jpg";
-import conversationBanner from "@/assets/conversation-banner.jpg";
+import groupCelebration from "@/assets/group-celebration.jpg";
 
 export default function Auth() {
   const [isLogin, setIsLogin] = useState(true);
@@ -132,8 +132,8 @@ export default function Auth() {
       {/* Banner */}
       <div className="relative h-48 overflow-hidden">
         <img 
-          src={conversationBanner} 
-          alt="People laughing and talking" 
+          src={groupCelebration} 
+          alt="Group of friends celebrating together" 
           className="w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-primary/70 to-purple-500/60" />
