@@ -8,7 +8,7 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { Loader2, Mail, Lock, User, Lightbulb, Zap } from "lucide-react";
 import lightbulbBanner from "@/assets/lightbulb-banner.jpg";
-import codeBanner from "@/assets/code-banner.jpg";
+import funBanner from "@/assets/fun-banner.jpg";
 
 export default function Auth() {
   const [isLogin, setIsLogin] = useState(true);
@@ -132,15 +132,15 @@ export default function Auth() {
       {/* Banner */}
       <div className="relative h-48 overflow-hidden">
         <img 
-          src={codeBanner} 
-          alt="Creative coding" 
+          src={funBanner} 
+          alt="Fun and playful" 
           className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-primary/80 to-primary/60" />
+        <div className="absolute inset-0 bg-gradient-to-r from-primary/70 to-purple-500/60" />
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="text-center text-white">
-            <h1 className="text-4xl font-bold mb-2">Icebreaker Maker</h1>
-            <p className="text-xl opacity-90">Break the ice with confidence</p>
+            <h1 className="text-4xl font-bold mb-2 animate-pulse">🎉 Icebreaker Maker 🎉</h1>
+            <p className="text-xl opacity-90">Break the ice with confidence and have fun!</p>
           </div>
         </div>
       </div>
