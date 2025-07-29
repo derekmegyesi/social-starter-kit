@@ -4,9 +4,10 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { Loader2, Mail, Lock, User, Lightbulb, Zap, Pickaxe } from "lucide-react";
+import { Loader2, Mail, Lock, User, Lightbulb, Zap, Pickaxe, HelpCircle } from "lucide-react";
 import icebreakerShip from "@/assets/icebreaker-ship.jpg";
 import friendsFaces from "@/assets/friends-faces.jpg";
 
@@ -138,20 +139,55 @@ export default function Auth() {
         />
         <div className="absolute inset-0 bg-gradient-to-r from-primary/70 to-purple-500/60 animate-fade-in" />
         <div className="absolute inset-0 flex items-center justify-center animate-scale-in">
-          <div className="text-center text-white max-w-4xl mx-auto px-6">
+          <div className="text-center text-white">
             <h1 className="text-4xl font-bold mb-2 animate-pulse">🎉 Icebreaker Maker 🎉</h1>
-            <p className="text-xl opacity-90 animate-fade-in mb-4">Break the ice with confidence and have fun!</p>
-            <p className="text-lg opacity-85 animate-fade-in leading-relaxed">
-              Transform awkward social moments into meaningful connections with AI-powered, personalized conversation starters. 
-              Whether you're at a party, networking event, or casual meetup, our intelligent system crafts icebreaker questions 
-              tailored to your personality, the event type, and your comfort level. Say goodbye to social anxiety and hello to 
-              genuine conversations that flow naturally and help you build lasting relationships.
-            </p>
+            <p className="text-xl opacity-90 animate-fade-in">Break the ice with confidence and have fun!</p>
           </div>
         </div>
       </div>
 
-      <div className="flex items-center justify-center p-4 -mt-12">
+      {/* What is IceBreaker Maker Button */}
+      <div className="flex justify-center -mt-6 mb-6">
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button variant="outline" className="bg-white/90 hover:bg-white shadow-lg">
+              <HelpCircle className="h-4 w-4 mr-2" />
+              What is the IceBreaker Maker?
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="max-w-2xl">
+            <DialogHeader>
+              <DialogTitle className="text-2xl bg-gradient-primary bg-clip-text text-transparent flex items-center gap-2">
+                <Lightbulb className="h-6 w-6 text-primary" />
+                About IceBreaker Maker
+              </DialogTitle>
+              <DialogDescription asChild>
+                <div className="space-y-4 text-base">
+                  <p className="leading-relaxed">
+                    Transform awkward social moments into meaningful connections with AI-powered, personalized conversation starters. 
+                    Whether you're at a party, networking event, or casual meetup, our intelligent system crafts icebreaker questions 
+                    tailored to your personality, the event type, and your comfort level.
+                  </p>
+                  <p className="leading-relaxed">
+                    Say goodbye to social anxiety and hello to genuine conversations that flow naturally and help you build lasting relationships.
+                  </p>
+                  <div className="bg-muted/50 p-4 rounded-lg">
+                    <h4 className="font-semibold mb-2 text-foreground">How it works:</h4>
+                    <ul className="space-y-1 text-sm text-muted-foreground">
+                      <li>• Create your personalized profile</li>
+                      <li>• Select your event type (party, networking, casual meetup, etc.)</li>
+                      <li>• Get AI-generated icebreakers designed just for you</li>
+                      <li>• Rate and improve your suggestions over time</li>
+                    </ul>
+                  </div>
+                </div>
+              </DialogDescription>
+            </DialogHeader>
+          </DialogContent>
+        </Dialog>
+      </div>
+
+      <div className="flex items-center justify-center p-4">
         <div className="w-full max-w-md space-y-8">
           {/* App logo */}
           <div className="text-center animate-scale-in">
