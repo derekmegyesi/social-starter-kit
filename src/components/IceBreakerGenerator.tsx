@@ -164,6 +164,12 @@ export const IceBreakerGenerator = ({ profile, eventType, eventName, onRating }:
 
   const generateAndSaveIceBreakers = async () => {
     try {
+      // Add loading state
+      toast({
+        title: "Generating personalized icebreakers...",
+        description: "ChatGPT is creating unique questions just for you!",
+      });
+
       // Call the ChatGPT edge function to generate personalized icebreakers
       const { data, error } = await supabase.functions.invoke('generate-icebreakers', {
         body: {
@@ -175,10 +181,30 @@ export const IceBreakerGenerator = ({ profile, eventType, eventName, onRating }:
 
       if (error) {
         console.error('Error calling edge function:', error);
+        
+        // Check if it's a rate limit error
+        if (error.message?.includes('429') || error.message?.includes('rate limit')) {
+          toast({
+            title: "Rate limit reached",
+            description: "Please wait a moment before generating new icebreakers. Using curated options for now.",
+            variant: "destructive",
+          });
+        } else {
+          toast({
+            title: "AI generation failed",
+            description: "Using curated icebreakers instead. Please try again in a moment.",
+            variant: "destructive",
+          });
+        }
+        
         // Fallback to hardcoded icebreakers if API fails
         const generated = generateIceBreakers(profile, eventType);
         setIceBreakers(generated);
         return;
+      }
+
+      if (!data?.icebreakers || !Array.isArray(data.icebreakers)) {
+        throw new Error('Invalid response format from AI');
       }
 
       // Transform the ChatGPT response to match our interface
@@ -190,6 +216,11 @@ export const IceBreakerGenerator = ({ profile, eventType, eventName, onRating }:
       }));
 
       setIceBreakers(transformedIcebreakers);
+      
+      toast({
+        title: "New icebreakers generated!",
+        description: "ChatGPT created personalized questions just for you!",
+      });
       
       // Save generated icebreakers to database
       const { data: { user } } = await supabase.auth.getUser();
@@ -280,10 +311,6 @@ export const IceBreakerGenerator = ({ profile, eventType, eventName, onRating }:
 
   const regenerateIceBreakers = () => {
     generateAndSaveIceBreakers();
-    toast({
-      title: "New ice breakers generated!",
-      description: "Here are some fresh conversation starters for you.",
-    });
   };
 
   const getDifficultyColor = (difficulty: string) => {
