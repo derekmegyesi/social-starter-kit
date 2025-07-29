@@ -163,28 +163,64 @@ export const IceBreakerGenerator = ({ profile, eventType, eventName, onRating }:
   }, [profile, eventType]);
 
   const generateAndSaveIceBreakers = async () => {
-    const generated = generateIceBreakers(profile, eventType);
-    setIceBreakers(generated);
-    
-    // Save generated icebreakers to database
-    const { data: { user } } = await supabase.auth.getUser();
-    if (user) {
-      const icebreakerData = generated.map(iceBreaker => ({
-        user_id: user.id,
-        text: iceBreaker.text,
-        category: iceBreaker.category,
-        difficulty: iceBreaker.difficulty,
-        event_type: eventType,
-        event_name: eventName
-      }));
-
-      const { error } = await supabase
-        .from('icebreakers')
-        .insert(icebreakerData);
+    try {
+      // Call the ChatGPT edge function to generate personalized icebreakers
+      const { data, error } = await supabase.functions.invoke('generate-icebreakers', {
+        body: {
+          userProfile: profile,
+          eventType,
+          eventName
+        }
+      });
 
       if (error) {
-        console.error('Error saving icebreakers:', error);
+        console.error('Error calling edge function:', error);
+        // Fallback to hardcoded icebreakers if API fails
+        const generated = generateIceBreakers(profile, eventType);
+        setIceBreakers(generated);
+        return;
       }
+
+      // Transform the ChatGPT response to match our interface
+      const transformedIcebreakers = data.icebreakers.map((ib: any, index: number) => ({
+        id: `ai-${Date.now()}-${index}`,
+        text: ib.text,
+        category: ib.category,
+        difficulty: ib.difficulty as "easy" | "medium" | "advanced"
+      }));
+
+      setIceBreakers(transformedIcebreakers);
+      
+      // Save generated icebreakers to database
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        const icebreakerData = transformedIcebreakers.map(iceBreaker => ({
+          user_id: user.id,
+          text: iceBreaker.text,
+          category: iceBreaker.category,
+          difficulty: iceBreaker.difficulty,
+          event_type: eventType,
+          event_name: eventName
+        }));
+
+        const { error: saveError } = await supabase
+          .from('icebreakers')
+          .insert(icebreakerData);
+
+        if (saveError) {
+          console.error('Error saving icebreakers:', saveError);
+        }
+      }
+    } catch (error) {
+      console.error('Error generating icebreakers:', error);
+      // Fallback to hardcoded icebreakers
+      const generated = generateIceBreakers(profile, eventType);
+      setIceBreakers(generated);
+      
+      toast({
+        title: "Using backup icebreakers",
+        description: "AI generation failed, but we've got you covered with curated options!",
+      });
     }
   };
 
