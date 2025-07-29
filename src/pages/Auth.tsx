@@ -8,6 +8,7 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { Loader2, Mail, Lock, User, Lightbulb, Zap } from "lucide-react";
 import lightbulbBanner from "@/assets/lightbulb-banner.jpg";
+import codeBanner from "@/assets/code-banner.jpg";
 
 export default function Auth() {
   const [isLogin, setIsLogin] = useState(true);
@@ -127,31 +128,40 @@ export default function Auth() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background to-muted flex items-center justify-center p-4">
-      <div className="w-full max-w-md space-y-8">
-        {/* App branding and overview */}
-        <div className="text-center space-y-4">
-          <div className="flex justify-center">
-            <div className="relative">
-              <img 
-                src={lightbulbBanner} 
-                alt="Creative ideas" 
-                className="h-20 w-20 rounded-full object-cover shadow-lg ring-4 ring-primary/20"
-              />
-              <div className="absolute -bottom-2 -right-2 h-8 w-8 bg-gradient-primary rounded-full flex items-center justify-center shadow-lg">
-                <Zap className="h-4 w-4 text-white" />
+    <div className="min-h-screen bg-gradient-to-br from-background to-muted">
+      {/* Banner */}
+      <div className="relative h-48 overflow-hidden">
+        <img 
+          src={codeBanner} 
+          alt="Creative coding" 
+          className="w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-primary/80 to-primary/60" />
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="text-center text-white">
+            <h1 className="text-4xl font-bold mb-2">Icebreaker Maker</h1>
+            <p className="text-xl opacity-90">Break the ice with confidence</p>
+          </div>
+        </div>
+      </div>
+
+      <div className="flex items-center justify-center p-4 -mt-12">
+        <div className="w-full max-w-md space-y-8">
+          {/* App logo */}
+          <div className="text-center">
+            <div className="flex justify-center">
+              <div className="relative">
+                <img 
+                  src={lightbulbBanner} 
+                  alt="Creative ideas" 
+                  className="h-20 w-20 rounded-full object-cover shadow-lg ring-4 ring-white bg-white"
+                />
+                <div className="absolute -bottom-2 -right-2 h-8 w-8 bg-gradient-primary rounded-full flex items-center justify-center shadow-lg">
+                  <Zap className="h-4 w-4 text-white" />
+                </div>
               </div>
             </div>
           </div>
-          <div className="space-y-2">
-            <h1 className="text-3xl font-bold bg-gradient-primary bg-clip-text text-transparent">
-              Icebreaker Maker
-            </h1>
-            <p className="text-muted-foreground max-w-sm mx-auto">
-              Break the ice with confidence. Get personalized conversation starters for any social situation.
-            </p>
-          </div>
-        </div>
 
         <Card className="shadow-warm">
           <CardHeader className="text-center">
@@ -244,6 +254,7 @@ export default function Auth() {
           </div>
         </CardContent>
         </Card>
+        </div>
       </div>
     </div>
   );
