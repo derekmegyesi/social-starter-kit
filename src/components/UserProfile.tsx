@@ -180,7 +180,7 @@ export const UserProfile = ({ onProfileComplete, initialProfile }: UserProfilePr
             className="w-full"
             disabled={!isComplete}
           >
-            Create My Profile
+            {initialProfile ? "Update My Profile" : "Create My Profile"}
           </Button>
         </form>
       </CardContent>

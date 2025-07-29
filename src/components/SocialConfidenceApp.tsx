@@ -270,9 +270,13 @@ export const SocialConfidenceApp = ({ initialStep = "welcome" }: SocialConfidenc
           </div>
           
           <div className="flex items-center gap-2">
-            <span className="text-sm text-muted-foreground">
-              {user?.email}
-            </span>
+            <Link to="/profile">
+              <Button variant="ghost" size="sm">
+                <span className="text-sm">
+                  {user?.email}
+                </span>
+              </Button>
+            </Link>
             {currentStep === "icebreakers" && (
               <Button variant="outline" onClick={startOver}>
                 Start Over
