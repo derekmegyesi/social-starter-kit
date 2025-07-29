@@ -138,9 +138,15 @@ export default function Auth() {
         />
         <div className="absolute inset-0 bg-gradient-to-r from-primary/70 to-purple-500/60 animate-fade-in" />
         <div className="absolute inset-0 flex items-center justify-center animate-scale-in">
-          <div className="text-center text-white">
+          <div className="text-center text-white max-w-4xl mx-auto px-6">
             <h1 className="text-4xl font-bold mb-2 animate-pulse">🎉 Icebreaker Maker 🎉</h1>
-            <p className="text-xl opacity-90 animate-fade-in">Break the ice with confidence and have fun!</p>
+            <p className="text-xl opacity-90 animate-fade-in mb-4">Break the ice with confidence and have fun!</p>
+            <p className="text-lg opacity-85 animate-fade-in leading-relaxed">
+              Transform awkward social moments into meaningful connections with AI-powered, personalized conversation starters. 
+              Whether you're at a party, networking event, or casual meetup, our intelligent system crafts icebreaker questions 
+              tailored to your personality, the event type, and your comfort level. Say goodbye to social anxiety and hello to 
+              genuine conversations that flow naturally and help you build lasting relationships.
+            </p>
           </div>
         </div>
       </div>
