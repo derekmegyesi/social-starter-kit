@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { Loader2, Mail, Lock, User, Lightbulb, Zap, Pickaxe } from "lucide-react";
-import icePick from "@/assets/ice-pick.jpg";
+import icebreakerShip from "@/assets/icebreaker-ship.jpg";
 import conversationBanner from "@/assets/conversation-banner.jpg";
 
 export default function Auth() {
@@ -154,8 +154,8 @@ export default function Auth() {
                 <div className="h-32 w-32 rounded-full bg-white shadow-xl ring-4 ring-white flex items-center justify-center">
                   <div className="flex items-center justify-center">
                     <img 
-                      src={icePick} 
-                      alt="Ice pick tool" 
+                      src={icebreakerShip} 
+                      alt="Icebreaker ship in Arctic ice" 
                       className="h-20 w-20 rounded-full object-cover"
                     />
                   </div>
