@@ -141,7 +141,7 @@ export default function Auth() {
         <div className="absolute inset-0 bg-gradient-to-r from-primary/70 to-purple-500/60 animate-fade-in" />
         <div className="absolute inset-0 flex items-center justify-center animate-scale-in">
           <div className="text-center text-white">
-            <h1 className="text-4xl font-bold mb-2 animate-pulse">🎉 Icebreaker Maker 🎉</h1>
+            <h1 className="text-4xl font-bold mb-2 animate-pulse">IceBreaker Maker</h1>
             <p className="text-xl opacity-90 animate-fade-in">Break the ice with confidence and have fun!</p>
           </div>
         </div>
