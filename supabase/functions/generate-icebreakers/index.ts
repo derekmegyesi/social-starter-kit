@@ -65,7 +65,18 @@ Return ONLY a JSON array of objects with this exact format:
     });
 
     if (!response.ok) {
-      throw new Error(`OpenAI API error: ${response.status}`);
+      const errorText = await response.text();
+      console.error(`OpenAI API error: ${response.status}`, errorText);
+      
+      // Return a structured error response instead of throwing
+      return new Response(JSON.stringify({ 
+        error: `OpenAI API error: ${response.status}`,
+        isRateLimit: response.status === 429,
+        fallbackRequired: true 
+      }), {
+        status: 200, // Return 200 so the client can handle it gracefully
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
     }
 
     const data = await response.json();

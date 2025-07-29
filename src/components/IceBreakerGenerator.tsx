@@ -182,22 +182,35 @@ export const IceBreakerGenerator = ({ profile, eventType, eventName, onRating }:
       if (error) {
         console.error('Error calling edge function:', error);
         
-        // Check if it's a rate limit error
-        if (error.message?.includes('429') || error.message?.includes('rate limit')) {
+        toast({
+          title: "AI generation failed",
+          description: "Using curated icebreakers instead. Please try again in a moment.",
+          variant: "destructive",
+        });
+        
+        // Fallback to hardcoded icebreakers if API fails
+        const generated = generateIceBreakers(profile, eventType);
+        setIceBreakers(generated);
+        return;
+      }
+
+      // Check if the response indicates an error or need for fallback
+      if (data?.fallbackRequired || data?.error) {
+        if (data?.isRateLimit) {
           toast({
             title: "Rate limit reached",
-            description: "Please wait a moment before generating new icebreakers. Using curated options for now.",
+            description: "OpenAI is busy! Using curated icebreakers designed just for you.",
             variant: "destructive",
           });
         } else {
           toast({
-            title: "AI generation failed",
-            description: "Using curated icebreakers instead. Please try again in a moment.",
+            title: "AI temporarily unavailable",
+            description: "Using curated icebreakers instead.",
             variant: "destructive",
           });
         }
         
-        // Fallback to hardcoded icebreakers if API fails
+        // Fallback to hardcoded icebreakers
         const generated = generateIceBreakers(profile, eventType);
         setIceBreakers(generated);
         return;
