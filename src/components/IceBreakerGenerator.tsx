@@ -156,11 +156,30 @@ const generateIceBreakers = (profile: UserProfile, eventType: string): IceBreake
 export const IceBreakerGenerator = ({ profile, eventType, eventName, onRating }: IceBreakerGeneratorProps) => {
   const [iceBreakers, setIceBreakers] = useState<IceBreaker[]>([]);
   const [feedback, setFeedback] = useState<string>("");
+  const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+  const [cooldownTime, setCooldownTime] = useState(60);
   const { toast } = useToast();
 
   useEffect(() => {
     generateAndSaveIceBreakers();
+    startCooldown();
   }, [profile, eventType]);
+
+  const startCooldown = () => {
+    setIsButtonDisabled(true);
+    setCooldownTime(60);
+    
+    const timer = setInterval(() => {
+      setCooldownTime((prev) => {
+        if (prev <= 1) {
+          clearInterval(timer);
+          setIsButtonDisabled(false);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+  };
 
   const generateAndSaveIceBreakers = async () => {
     try {
@@ -324,6 +343,7 @@ export const IceBreakerGenerator = ({ profile, eventType, eventName, onRating }:
 
   const regenerateIceBreakers = () => {
     generateAndSaveIceBreakers();
+    startCooldown();
   };
 
   const getDifficultyColor = (difficulty: string) => {
@@ -348,10 +368,11 @@ export const IceBreakerGenerator = ({ profile, eventType, eventName, onRating }:
           <Button 
             variant="outline" 
             onClick={regenerateIceBreakers}
+            disabled={isButtonDisabled}
             className="mx-auto"
           >
             <RefreshCw className="h-4 w-4 mr-2" />
-            Generate New Ones
+            {isButtonDisabled ? `Wait ${cooldownTime}s` : "Generate New Ones"}
           </Button>
         </CardHeader>
       </Card>
