@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { UserProfile } from "./UserProfile";
 import { EventSelector } from "./EventSelector";
@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ArrowLeft, Users, Sparkles, LogOut } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/integrations/supabase/client";
 import heroImage from "@/assets/hero-social.jpg";
 
 interface UserProfileData {
@@ -30,11 +31,90 @@ export const SocialConfidenceApp = ({ initialStep = "welcome" }: SocialConfidenc
   const [userProfile, setUserProfile] = useState<UserProfileData | null>(null);
   const [selectedEvent, setSelectedEvent] = useState<{ type: string; name: string } | null>(null);
   const [ratings, setRatings] = useState<Record<string, number>>({});
+  const [loading, setLoading] = useState(true);
   const { signOut, user } = useAuth();
 
-  const handleProfileComplete = (profile: UserProfileData) => {
-    setUserProfile(profile);
-    setCurrentStep("event");
+  // Check for existing profile when user logs in
+  useEffect(() => {
+    const checkExistingProfile = async () => {
+      if (!user) {
+        setLoading(false);
+        return;
+      }
+
+      try {
+        const { data: profile, error } = await supabase
+          .from('profiles')
+          .select('*')
+          .eq('user_id', user.id)
+          .maybeSingle();
+
+        if (error) {
+          console.error('Error fetching profile:', error);
+          setLoading(false);
+          return;
+        }
+
+        if (profile) {
+          // User has existing profile, load it and skip to event selection
+          setUserProfile({
+            name: profile.name,
+            age: profile.age,
+            gender: profile.gender,
+            city: profile.city,
+            temperament: profile.temperament,
+            preferredEnvironment: profile.preferred_environment,
+            bio: profile.bio
+          });
+          
+          // If we're on welcome or should start at profile, skip to event selection
+          if (initialStep === "welcome" || initialStep === "profile") {
+            setCurrentStep("event");
+          }
+        } else {
+          // No profile exists, ensure we start at profile creation
+          if (initialStep === "welcome") {
+            setCurrentStep("profile");
+          }
+        }
+      } catch (error) {
+        console.error('Error checking profile:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    checkExistingProfile();
+  }, [user, initialStep]);
+
+  const handleProfileComplete = async (profile: UserProfileData) => {
+    if (!user) return;
+
+    try {
+      // Save profile to database
+      const { error } = await supabase
+        .from('profiles')
+        .upsert({
+          user_id: user.id,
+          name: profile.name,
+          age: profile.age,
+          gender: profile.gender,
+          city: profile.city,
+          temperament: profile.temperament,
+          preferred_environment: profile.preferredEnvironment,
+          bio: profile.bio
+        });
+
+      if (error) {
+        console.error('Error saving profile:', error);
+        return;
+      }
+
+      setUserProfile(profile);
+      setCurrentStep("event");
+    } catch (error) {
+      console.error('Error saving profile:', error);
+    }
   };
 
   const handleEventSelect = (eventType: string, eventName: string) => {
@@ -60,11 +140,22 @@ export const SocialConfidenceApp = ({ initialStep = "welcome" }: SocialConfidenc
   };
 
   const startOver = () => {
-    setCurrentStep("welcome");
-    setUserProfile(null);
+    setCurrentStep("event"); // Start at event selection since profile exists
     setSelectedEvent(null);
     setRatings({});
   };
+
+  // Show loading state while checking for existing profile
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-bg flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Loading your profile...</p>
+        </div>
+      </div>
+    );
+  }
 
   if (currentStep === "welcome") {
     return (
