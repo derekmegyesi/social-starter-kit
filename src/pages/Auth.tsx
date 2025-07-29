@@ -6,7 +6,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { Loader2, Mail, Lock, User, Sparkles } from "lucide-react";
+import { Loader2, Mail, Lock, User, Lightbulb, Zap } from "lucide-react";
+import lightbulbBanner from "@/assets/lightbulb-banner.jpg";
 
 export default function Auth() {
   const [isLogin, setIsLogin] = useState(true);
@@ -132,9 +133,13 @@ export default function Auth() {
         <div className="text-center space-y-4">
           <div className="flex justify-center">
             <div className="relative">
-              <Sparkles className="h-16 w-16 text-primary" />
-              <div className="absolute -top-1 -right-1 h-6 w-6 bg-primary rounded-full flex items-center justify-center">
-                <Sparkles className="h-3 w-3 text-primary-foreground" />
+              <img 
+                src={lightbulbBanner} 
+                alt="Creative ideas" 
+                className="h-20 w-20 rounded-full object-cover shadow-lg ring-4 ring-primary/20"
+              />
+              <div className="absolute -bottom-2 -right-2 h-8 w-8 bg-gradient-primary rounded-full flex items-center justify-center shadow-lg">
+                <Zap className="h-4 w-4 text-white" />
               </div>
             </div>
           </div>
