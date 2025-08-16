@@ -59,8 +59,7 @@ Return ONLY a JSON array of objects with this exact format:
           { role: 'system', content: systemPrompt },
           { role: 'user', content: 'Generate personalized icebreaker questions for this profile and event.' }
         ],
-        temperature: 0.8,
-        max_tokens: 1500,
+        max_completion_tokens: 1500,
       }),
     });
 
