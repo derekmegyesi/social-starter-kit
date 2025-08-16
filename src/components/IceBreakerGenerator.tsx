@@ -183,6 +183,11 @@ export const IceBreakerGenerator = ({ profile, eventType, eventName, onRating }:
 
   const generateAndSaveIceBreakers = async () => {
     try {
+      console.log('🔄 Starting icebreaker generation...');
+      console.log('Profile:', profile);
+      console.log('Event Type:', eventType);
+      console.log('Event Name:', eventName);
+      
       // Add loading state
       toast({
         title: "Generating personalized icebreakers...",
@@ -190,6 +195,7 @@ export const IceBreakerGenerator = ({ profile, eventType, eventName, onRating }:
       });
 
       // Call the ChatGPT edge function to generate personalized icebreakers
+      console.log('📡 Calling edge function...');
       const { data, error } = await supabase.functions.invoke('generate-icebreakers', {
         body: {
           userProfile: profile,
@@ -198,12 +204,14 @@ export const IceBreakerGenerator = ({ profile, eventType, eventName, onRating }:
         }
       });
 
+      console.log('📥 Edge function response:', { data, error });
+
       if (error) {
-        console.error('Error calling edge function:', error);
+        console.error('❌ Error calling edge function:', error);
         
         toast({
           title: "AI generation failed",
-          description: "Using curated icebreakers instead. Please try again in a moment.",
+          description: `Error: ${error.message || 'Unknown error'}. Using curated icebreakers instead.`,
           variant: "destructive",
         });
         
