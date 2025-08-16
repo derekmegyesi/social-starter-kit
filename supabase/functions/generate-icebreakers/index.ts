@@ -54,7 +54,7 @@ Return ONLY a JSON array of objects with this exact format:
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'gpt-4.1-2025-04-14',
+        model: 'gpt-5-2025-08-07',
         messages: [
           { role: 'system', content: systemPrompt },
           { role: 'user', content: 'Generate personalized icebreaker questions for this profile and event.' }
