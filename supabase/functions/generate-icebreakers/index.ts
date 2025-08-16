@@ -55,7 +55,7 @@ Return ONLY a JSON array of objects with this exact format:
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'gpt-4o-mini',
+        model: 'gpt-3.5-turbo',
         messages: [
           { role: 'system', content: systemPrompt },
           { role: 'user', content: 'Generate personalized icebreaker questions for this profile and event.' }
@@ -72,7 +72,7 @@ Return ONLY a JSON array of objects with this exact format:
         'Authorization': `Bearer ${openAIApiKey ? 'PRESENT' : 'MISSING'}`,
         'Content-Type': 'application/json',
       });
-      console.error('Request body model:', 'gpt-5-2025-08-07');
+      console.error('Request body model:', 'gpt-3.5-turbo');
       
       // Return a structured error response instead of throwing
       return new Response(JSON.stringify({ 
