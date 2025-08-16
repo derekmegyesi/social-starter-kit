@@ -55,12 +55,13 @@ Return ONLY a JSON array of objects with this exact format:
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'gpt-5-2025-08-07',
+        model: 'gpt-4o',
         messages: [
           { role: 'system', content: systemPrompt },
           { role: 'user', content: 'Generate personalized icebreaker questions for this profile and event.' }
         ],
-        max_completion_tokens: 1500,
+        temperature: 0.8,
+        max_tokens: 1500,
       }),
     });
 
