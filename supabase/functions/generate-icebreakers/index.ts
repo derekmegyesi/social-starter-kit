@@ -66,10 +66,16 @@ Return ONLY a JSON array of objects with this exact format:
     if (!response.ok) {
       const errorText = await response.text();
       console.error(`OpenAI API error: ${response.status}`, errorText);
+      console.error('Request headers:', {
+        'Authorization': `Bearer ${openAIApiKey ? 'PRESENT' : 'MISSING'}`,
+        'Content-Type': 'application/json',
+      });
+      console.error('Request body model:', 'gpt-5-2025-08-07');
       
       // Return a structured error response instead of throwing
       return new Response(JSON.stringify({ 
         error: `OpenAI API error: ${response.status}`,
+        details: errorText,
         isRateLimit: response.status === 429,
         fallbackRequired: true 
       }), {
